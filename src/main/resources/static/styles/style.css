@@ -247,6 +247,34 @@ tr:hover td {
     animation: pulseGlow 3s infinite;
 }
 
+.genero-juego {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background-color: rgba(79, 124, 255, 0.15);
+}
+
+.datos-juego {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.precio-juego {
+    margin: 6px 0 10px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+
+    background: linear-gradient(90deg, #4f7cff, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 
 @media (max-width: 768px) {
     .nav-links {
@@ -256,5 +284,44 @@ tr:hover td {
     .grid {
         grid-template-columns: 1fr;
     }
+}
+
+.busqueda-juegos {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.busqueda-juegos .form-control {
+    flex: 1;
+}
+
+.btn-limpiar {
+    background-color: rgba(139, 92, 246, 0.10);
+    border: 1px solid #8b5cf6;
+    color: #c4b5fd;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-limpiar:hover {
+    background-color: rgba(139, 92, 246, 0.20);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.25);
+}
+
+.busqueda-juegos select {
+    background: #0d1328;
+    color: #ffffff;
+    border: 1px solid rgba(79, 124, 255, 0.25);
+    border-radius: 12px;
+}
+
+.busqueda-juegos select option {
+    background: #1b2742;
+    color: #ffffff;
 }
 

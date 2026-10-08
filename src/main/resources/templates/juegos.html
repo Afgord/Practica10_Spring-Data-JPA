@@ -6,6 +6,74 @@
             <a th:href="@{/juegos/nuevo}" class="btn btn-primary">+ Nuevo Juego</a>
         </div>
 
+        <form th:action="@{/juegos}"
+              method="get"
+              class="busqueda-juegos">
+
+            <input type="text"
+                   name="q"
+                   th:value="${q}"
+                   placeholder="Buscar por título..."
+                   class="form-control">
+
+            <select name="plataforma"
+                    class="form-control">
+                <option value="">Todas las plataformas</option>
+                <option value="PC"
+                        th:selected="${plataforma == 'PC'}">PC</option>
+                <option value="PS5"
+                        th:selected="${plataforma == 'PS5'}">PS5</option>
+                <option value="Multiplataforma"
+                        th:selected="${plataforma == 'Multiplataforma'}">
+                    Multiplataforma
+                </option>
+            </select>
+
+            <select name="orden"
+                    class="form-control">
+
+                <option value="tituloAsc"
+                        th:selected="${orden == null or orden == 'tituloAsc'}">
+                    Título A-Z
+                </option>
+
+                <option value="tituloDesc"
+                        th:selected="${orden == 'tituloDesc'}">
+                    Título Z-A
+                </option>
+
+                <option value="precioAsc"
+                        th:selected="${orden == 'precioAsc'}">
+                    Precio: menor a mayor
+                </option>
+
+                <option value="precioDesc"
+                        th:selected="${orden == 'precioDesc'}">
+                    Precio: mayor a menor
+                </option>
+
+            </select>
+
+            <input type="number"
+                   name="precioMax"
+                   th:value="${precioMax}"
+                   placeholder="Precio máximo"
+                   min="0"
+                   step="0.01"
+                   class="form-control">
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Filtrar
+            </button>
+
+            <a th:href="@{/juegos}"
+               class="btn btn-limpiar">
+                ✕ Limpiar
+            </a>
+
+        </form>
+
         <div class="grid">
 
             <div class="panel" th:each="juego : ${juegos}" style="padding: 0; overflow: hidden;">
@@ -20,15 +88,43 @@
 
                 <div style="padding: 20px;">
                     <h3 th:text="${juego.titulo}" style="margin-top: 0; margin-bottom: 10px;">Título del Juego</h3>
+                    <div class="datos-juego">
+                        <span class="genero-juego"
+                              th:if="${juego.genero != null and !#strings.isEmpty(juego.genero)}"
+                              th:text="${juego.genero}">Género</span>
+
+                        <span class="plataforma-juego"
+                              th:if="${juego.plataforma != null and !#strings.isEmpty(juego.plataforma)}"
+                              th:text="${juego.plataforma}">Plataforma</span>
+                    </div>
+
+                    <div class="precio-juego"
+                         th:if="${juego.precio != null}">
+                        $<span th:text="${#numbers.formatDecimal(juego.precio, 1, 2)}">0.00</span>
+                    </div>
+
                     <p th:text="${juego.descripcion}"
-                       style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin: 0;">Descripción
-                        breve del juego.</p>
+                       style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                        Descripción breve del juego.
+                    </p>
                 </div>
             </div>
 
             <div th:if="${#lists.isEmpty(juegos)}"
-                 style="grid-column: 1 / -1; text-align: center; padding-top: 50px; color: var(--text-muted);">
-                No hay juegos en la bóveda aún. ¡Sé el primero en subir uno!
+                 style="grid-column: 1 / -1;
+            text-align: center;
+            padding-top: 50px;
+            color: var(--text-muted);">
+
+    <span th:if="${q == null or #strings.isEmpty(q)}">
+        No hay juegos disponibles en la bóveda.
+    </span>
+
+                <span th:if="${q != null and !#strings.isEmpty(q)}">
+        No se encontraron juegos para
+        "<strong th:text="${q}"></strong>".
+    </span>
+
             </div>
 
         </div>

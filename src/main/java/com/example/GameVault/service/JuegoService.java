@@ -3,6 +3,7 @@ package com.example.GameVault.service;
 import com.example.GameVault.model.Juego;
 import com.example.GameVault.repository.JuegoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,19 +28,86 @@ public class JuegoService {
         return juegoRepository.findAll();
     }
 
+    public List<Juego> listarActivos() {
+        return juegoRepository.findByActivoTrue();
+    }
+
+    public List<Juego> buscarActivosPorTitulo(String titulo) {
+        return juegoRepository.findByTituloContainingIgnoreCaseAndActivoTrue(titulo);
+    }
+
+    public List<Juego> buscarCatalogo(String texto,
+                                      String plataforma,
+                                      Double precioMax,
+                                      String orden) {
+
+        if (texto != null && texto.isBlank()) {
+            texto = null;
+        }
+
+        if (plataforma != null && plataforma.isBlank()) {
+            plataforma = null;
+        }
+
+        Sort sort;
+
+        if ("precioAsc".equals(orden)) {
+            sort = Sort.by(Sort.Direction.ASC, "precio");
+
+        } else if ("precioDesc".equals(orden)) {
+            sort = Sort.by(Sort.Direction.DESC, "precio");
+
+        } else if ("tituloDesc".equals(orden)) {
+            sort = Sort.by(Sort.Direction.DESC, "titulo");
+
+        } else {
+            sort = Sort.by(Sort.Direction.ASC, "titulo");
+        }
+
+        return juegoRepository.buscarCatalogo(
+                texto,
+                plataforma,
+                precioMax,
+                sort
+        );
+    }
+
     public void guardarJuego(Juego juego, MultipartFile portada) {
+
+        if (juego.getPrecio() == null || juego.getPrecio() <= 0) {
+            throw new IllegalArgumentException(
+                    "El precio debe ser mayor que cero"
+            );
+        }
+
+        if (juego.getTitulo() == null || juego.getTitulo().isBlank()) {
+            throw new IllegalArgumentException(
+                    "El título es obligatorio"
+            );
+        }
+
+        if (juego.getPlataforma() == null || juego.getPlataforma().isBlank()) {
+            throw new IllegalArgumentException(
+                    "La plataforma es obligatoria"
+            );
+        }
+
+        if (juego.getActivo() == null) {
+            juego.setActivo(true);
+        }
 
         String nombreArchivo = "default.jpg";
 
-        if (!portada.isEmpty()) {
+        if (portada != null && !portada.isEmpty()) {
             nombreArchivo = guardarImagenEnProyecto(portada);
         }
 
         juego.setPortadaUrl(nombreArchivo);
+
         juegoRepository.save(juego);
     }
 
-    public String guardarImagenEnProyecto(MultipartFile portada) {
+    private String guardarImagenEnProyecto(MultipartFile portada) {
 
         try {
             Path uploadPath = Paths.get(UPLOAD_DIR);

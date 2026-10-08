@@ -16,9 +16,51 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="genero">Género</label>
+                    <input type="text"
+                           id="genero"
+                           name="genero"
+                           class="form-control"
+                           placeholder="Ej. Acción, RPG, Terror..."
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="plataforma">Plataforma</label>
+                    <input type="text"
+                           id="plataforma"
+                           name="plataforma"
+                           class="form-control"
+                           placeholder="Ej. PS4, PS5, PC, XBOX One..."
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="precio">Precio</label>
+                    <input type="text"
+                           id="precio"
+                           name="precio"
+                           class="form-control"
+                           placeholder="$200.00"
+                           required>
+                </div>
+
+                <div class="form-group">
                     <label for="descripcion" class="form-label">Descripción Breve</label>
                     <textarea id="descripcion" name="descripcion" rows="4" required class="form-control"
                               style="resize: vertical;"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="anio">Año de lanzamiento</label>
+
+                    <input type="number"
+                           id="anio"
+                           name="anio"
+                           class="form-control"
+                           placeholder="Ej. 2024"
+                           min="1950"
+                           step="1">
                 </div>
 
                 <div class="form-group"

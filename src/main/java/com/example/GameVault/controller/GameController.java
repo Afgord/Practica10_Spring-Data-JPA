@@ -22,9 +22,27 @@ public class GameController {
     }
 
     @GetMapping({"/", "/juegos"})
-    public String listarJuegos(Model model) {
+    public String listarJuegos(
+            @RequestParam(value = "q", required = false) String q,
+            @RequestParam(value = "plataforma", required = false) String plataforma,
+            @RequestParam(value = "precioMax", required = false) Double precioMax,
+            @RequestParam(value = "orden", required = false) String orden,
+            Model model) {
 
-        model.addAttribute("juegos", juegoService.listarTodos());
+        model.addAttribute(
+                "juegos",
+                juegoService.buscarCatalogo(
+                        q,
+                        plataforma,
+                        precioMax,
+                        orden
+                )
+        );
+
+        model.addAttribute("q", q);
+        model.addAttribute("plataforma", plataforma);
+        model.addAttribute("precioMax", precioMax);
+        model.addAttribute("orden", orden);
 
         return "juegos";
     }
@@ -36,12 +54,18 @@ public class GameController {
 
     @PostMapping("/juegos")
     public String guardarJuego(@RequestParam("titulo") String titulo,
+                               @RequestParam("genero") String genero,
+                               @RequestParam("plataforma") String plataforma,
+                               @RequestParam("precio") Double precio,
                                @RequestParam("descripcion") String descripcion,
-                               @RequestParam("portada") MultipartFile portada) {
+                               @RequestParam("portada") MultipartFile portada){
 
         Juego nuevoJuego = new Juego();
 
         nuevoJuego.setTitulo(titulo);
+        nuevoJuego.setGenero(genero);
+        nuevoJuego.setPlataforma(plataforma);
+        nuevoJuego.setPrecio(precio);
         nuevoJuego.setDescripcion(descripcion);
 
         juegoService.guardarJuego(nuevoJuego, portada);
