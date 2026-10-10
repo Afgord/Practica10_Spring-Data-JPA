@@ -57,6 +57,7 @@ public class GameController {
                                @RequestParam("genero") String genero,
                                @RequestParam("plataforma") String plataforma,
                                @RequestParam("precio") Double precio,
+                               @RequestParam(value = "anio", required = false) Integer anio,
                                @RequestParam("descripcion") String descripcion,
                                @RequestParam("portada") MultipartFile portada){
 
@@ -66,6 +67,7 @@ public class GameController {
         nuevoJuego.setGenero(genero);
         nuevoJuego.setPlataforma(plataforma);
         nuevoJuego.setPrecio(precio);
+        nuevoJuego.setAnio(anio);
         nuevoJuego.setDescripcion(descripcion);
 
         juegoService.guardarJuego(nuevoJuego, portada);

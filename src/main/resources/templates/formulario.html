@@ -37,11 +37,13 @@
 
                 <div class="form-group">
                     <label for="precio">Precio</label>
-                    <input type="text"
+                    <input type="number"
                            id="precio"
                            name="precio"
                            class="form-control"
-                           placeholder="$200.00"
+                           placeholder="200.00"
+                           min="0.01"
+                           step="0.01"
                            required>
                 </div>
 
